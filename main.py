@@ -47,7 +47,7 @@ ff_env = DummyVecEnv([lambda: TradingEnv(train_df, start=0, end=n-3, features=te
 policy_kwargs = {'layers':[16, 16, 16], 'feature_extraction':'mlp', 'act_fun':tf.nn.sigmoid}
 ff_model = A2C(FeedForwardPolicy, ff_env, verbose=False, policy_kwargs = policy_kwargs, 
             learning_rate = 0.0005, gamma=1, tensorboard_log='./tensorboard/')
-ff_model = train(ff_model, n-3, 3)
+ff_model = train(ff_model, n-3, 30)
 
 ## A2C+LSTM
 n = train_df.shape[0]
@@ -55,7 +55,7 @@ lstm_env = DummyVecEnv([lambda: TradingEnv(train_df, start=0, end=n-3, features=
 policy_kwargs = {'n_lstm':16, 'feature_extraction':'mlp', 'net_arch':['lstm']}
 lstm_model = A2C(LstmPolicy, lstm_env, verbose=False, policy_kwargs = policy_kwargs, 
             learning_rate = 0.0005, gamma=1, tensorboard_log='./tensorboard/')
-lstm_model = train(ff_model, n-3, 3)
+lstm_model = train(lstm_model, n-3, 30)
 
 # Test
 evaluate(ff_model, test_df)
